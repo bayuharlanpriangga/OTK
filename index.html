@@ -20,17 +20,25 @@
   --state-color: var(--accent);
   --state-dim: var(--accent-dim);
   --state-mid: var(--accent-mid);
-  --bg:#0D0D1A; --panel:#1A1A2E; --border:#2A2A4A;
-  --fg:#E8E8FF; --muted:#4A4A7A; --radius:0px;
+  /* shell konsisten (rounded/minimal) untuk semua pilihan font */
+  --bg:#0D0D1A; --panel:#111111; --border:#232323;
+  --fg:#F2F2F2; --muted:#505050; --radius:10px;
+  --font-ui:'Inter',sans-serif;
+
+  /* FONT default = pixel (Press Start 2P), bisa diganti lewat tab FONT */
   --font-display:'Press Start 2P',monospace;
-  --font-ui:'Share Tech Mono',monospace;
   --font-digit:'Press Start 2P',monospace;
+  --digit-letterspacing: 0.05em;
+  --digit-weight: 400;
+  --display-letterspacing: 0.15em;
 
   /* digit size: pakai min(vw,vh) supaya portrait/landscape sama-sama balanced */
   --digit-size: clamp(52px, min(13vw, 18vh), 172px);
   --digit-size-hms: clamp(36px, min(9vw, 13vh), 120px);
   --digit-size-present: clamp(80px, min(24vw, 30vh), 300px);
   --digit-size-present-hms: clamp(56px, min(16vw, 21vh), 210px);
+  --ring-size: clamp(36px, min(9vw, 12vh), 120px);
+  --ring-size-present: clamp(52px, min(13vw, 17vh), 180px);
 
   /* spacing scale */
   --gap-sm: clamp(6px, 1.2vh, 12px);
@@ -38,247 +46,57 @@
   --ctrl-height: clamp(80px, 14vh, 120px);
 }
 
-/* ══ MODEL: ARCADE (default) ══ */
-body.theme-arcade {
-  --panel:#1A1A2E; --border:#2A2A4A;
-  --fg:#E8E8FF; --muted:#4A4A7A; --radius:0px;
+/* ══════════════════════════════════════════════════
+   FONT — hanya mengatur tipografi digit/display.
+   Tampilan (tombol, panel, border, ring) konsisten
+   "minimal/rounded" untuk semua pilihan font.
+   Warna selalu ikut accent.
+   ══════════════════════════════════════════════════ */
+
+/* ══ FONT: PIXEL (Press Start 2P) ══ */
+body.font-pixel {
   --font-display:'Press Start 2P',monospace;
-  --font-ui:'Share Tech Mono',monospace;
   --font-digit:'Press Start 2P',monospace;
+  --digit-letterspacing: 0.05em;
+  --digit-weight: 400;
+  --display-letterspacing: 0.15em;
+  --digit-size: clamp(52px, min(13vw, 18vh), 172px);
+  --digit-size-hms: clamp(36px, min(9vw, 13vh), 120px);
+  --digit-size-present: clamp(80px, min(24vw, 30vh), 300px);
+  --digit-size-present-hms: clamp(56px, min(16vw, 21vh), 210px);
+  --ring-size: clamp(36px, min(9vw, 12vh), 120px);
+  --ring-size-present: clamp(52px, min(13vw, 17vh), 180px);
 }
-body.theme-arcade::before {
-  content:''; position:fixed; inset:0; pointer-events:none; z-index:200;
-  background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,0,0,0.08) 2px,rgba(0,0,0,0.08) 4px);
-}
-body.theme-arcade.bar-ring::before { display:none; }
-body.theme-arcade #app-name { font-size:clamp(8px,1.2vw,11px); letter-spacing:0.15em; }
-body.theme-arcade #timer-display { font-size:var(--digit-size); letter-spacing:0.05em; }
-body.theme-arcade .pxbtn {
-  clip-path:polygon(4px 0%,calc(100% - 4px) 0%,100% 4px,100% calc(100% - 4px),calc(100% - 4px) 100%,4px 100%,0% calc(100% - 4px),0% 4px);
-  font-family:'Press Start 2P',monospace; font-size:clamp(7px,1vw,9px); padding:clamp(9px,1.5vh,13px) clamp(14px,2vw,22px); border-width:2px;
-}
-body.theme-arcade #setup-box {
-  clip-path:polygon(8px 0%,calc(100% - 8px) 0%,100% 8px,100% calc(100% - 8px),calc(100% - 8px) 100%,8px 100%,0% calc(100% - 8px),0% 8px);
-}
-body.theme-arcade #topbar { border-bottom:1px solid var(--border); }
-body.theme-arcade #session-name { font-size:clamp(7px,min(1.8vw,1.6vh),12px); }
-body.theme-arcade #gameover-banner { font-family:'Press Start 2P',monospace; font-size:clamp(14px,min(3.5vw,4vh),38px); }
-body.theme-arcade.present #timer-display { font-size:var(--digit-size-present); }
 
-/* ══ MODEL: MINIMAL ══ */
-body.theme-minimal {
-  --panel:#111111; --border:#232323;
-  --fg:#F2F2F2; --muted:#505050; --radius:8px;
+/* ══ FONT: CLEAN (Oswald) ══ */
+body.font-clean {
   --font-display:'Oswald',sans-serif;
-  --font-ui:'Inter',sans-serif;
   --font-digit:'Oswald',sans-serif;
+  --digit-letterspacing: -0.03em;
+  --digit-weight: 700;
+  --display-letterspacing: 0.2em;
+  --digit-size: clamp(64px, min(15vw, 20vh), 220px);
+  --digit-size-hms: clamp(44px, min(11vw, 15vh), 150px);
+  --digit-size-present: clamp(90px, min(22vw, 28vh), 300px);
+  --digit-size-present-hms: clamp(64px, min(16vw, 22vh), 220px);
+  --ring-size: clamp(42px, min(10vw, 13vh), 130px);
+  --ring-size-present: clamp(58px, min(14vw, 18vh), 190px);
 }
-body.theme-minimal #app-name { font-family:'Oswald',sans-serif; font-size:clamp(13px,1.8vw,20px); font-weight:600; letter-spacing:0.25em; text-shadow:none; }
-body.theme-minimal #timer-display { font-family:'Oswald',sans-serif; font-size:clamp(64px,min(15vw,20vh),220px); font-weight:700; letter-spacing:-0.03em; text-shadow:none; }
-body.theme-minimal .pxbtn { clip-path:none; border-radius:var(--radius); font-family:'Inter',sans-serif; font-size:clamp(10px,1.2vw,12px); font-weight:600; letter-spacing:0.05em; padding:clamp(9px,1.5vh,13px) clamp(16px,2.5vw,26px); border-width:1px; }
-body.theme-minimal .top-btn { border-radius:var(--radius); font-family:'Inter',sans-serif; }
-body.theme-minimal #setup-box { clip-path:none; border-radius:16px; border-width:1px; box-shadow:0 0 40px rgba(0,0,0,0.6); }
-body.theme-minimal #topbar { border-bottom:1px solid var(--border); }
-body.theme-minimal #session-name { font-family:'Inter',sans-serif; font-size:clamp(10px,min(1.8vw,1.6vh),15px); font-weight:500; letter-spacing:0.2em; }
-body.theme-minimal #session-arrow { font-family:'Inter',sans-serif; font-size:12px; }
-body.theme-minimal #prog-track { border-radius:100px; }
-body.theme-minimal #gameover-banner { font-family:'Oswald',sans-serif; font-weight:700; font-size:clamp(20px,min(4.5vw,5vh),56px); letter-spacing:0.15em; text-shadow:none; }
-body.theme-minimal.present #timer-display { font-size:clamp(90px,min(22vw,28vh),300px); }
 
-/* ══ MODEL: MILITARY ══ */
-body.theme-military {
-  --panel:#061406; --border:#0F2A0F;
-  --fg:#7DBF7D; --muted:#2A5A2A; --radius:0px;
+/* ══ FONT: MONO (Share Tech Mono) ══ */
+body.font-mono {
   --font-display:'Share Tech Mono',monospace;
-  --font-ui:'Share Tech Mono',monospace;
   --font-digit:'Share Tech Mono',monospace;
+  --digit-letterspacing: 0.08em;
+  --digit-weight: 400;
+  --display-letterspacing: 0.25em;
+  --digit-size: clamp(46px, min(11vw, 16vh), 180px);
+  --digit-size-hms: clamp(32px, min(8vw, 12vh), 124px);
+  --digit-size-present: clamp(80px, min(22vw, 28vh), 280px);
+  --digit-size-present-hms: clamp(56px, min(15vw, 20vh), 196px);
+  --ring-size: clamp(32px, min(8vw, 11vh), 110px);
+  --ring-size-present: clamp(46px, min(11.5vw, 15vh), 158px);
 }
-body.theme-military::before {
-  content:''; position:fixed; inset:0; pointer-events:none; z-index:200;
-  background:repeating-linear-gradient(0deg,transparent,transparent 3px,rgba(0,20,0,0.15) 3px,rgba(0,20,0,0.15) 4px);
-}
-body.theme-military #app-name { font-family:'Share Tech Mono',monospace; font-size:clamp(10px,1.4vw,14px); letter-spacing:0.35em; text-shadow:none; }
-body.theme-military #timer-display { font-family:'Share Tech Mono',monospace; font-size:clamp(46px,min(11vw,16vh),180px); font-weight:400; letter-spacing:0.08em; }
-body.theme-military .pxbtn { clip-path:none; border-width:1px; font-family:'Share Tech Mono',monospace; font-size:clamp(9px,1.1vw,12px); letter-spacing:0.2em; padding:clamp(9px,1.5vh,12px) clamp(14px,2vw,22px); }
-body.theme-military .top-btn { font-family:'Share Tech Mono',monospace; font-size:clamp(9px,1.1vw,11px); letter-spacing:0.15em; }
-body.theme-military #setup-box { clip-path:none; border-width:1px; }
-body.theme-military #session-name { font-family:'Share Tech Mono',monospace; font-size:clamp(10px,min(1.6vw,1.5vh),13px); letter-spacing:0.25em; }
-body.theme-military #session-arrow { font-family:'Share Tech Mono',monospace; font-size:11px; }
-body.theme-military #topbar { border-bottom:1px solid var(--border); }
-body.theme-military #gameover-banner { font-family:'Share Tech Mono',monospace; font-size:clamp(12px,min(3vw,3.5vh),34px); letter-spacing:0.3em; text-shadow:none; }
-body.theme-military.present #timer-display { font-size:clamp(70px,min(20vw,26vh),260px); }
-
-/* ══ MODEL: NEON ══ */
-body.theme-neon {
-  --panel:#0A0015; --border:#3A0060;
-  --fg:#F0CCFF; --muted:#7A3A9A; --radius:2px;
-  --font-display:'Press Start 2P',monospace;
-  --font-ui:'Share Tech Mono',monospace;
-  --font-digit:'Press Start 2P',monospace;
-}
-body.theme-neon #app-name { font-size:clamp(8px,1.2vw,11px); letter-spacing:0.2em; }
-body.theme-neon #timer-display {
-  font-size:var(--digit-size);
-  letter-spacing:0.06em;
-  font-weight:900;
-  -webkit-text-stroke: 2px var(--accent);
-  paint-order: stroke fill;
-  background: linear-gradient(180deg, #fff 0%, var(--accent) 60%, var(--accent-mid) 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  text-shadow: none;
-  filter: drop-shadow(0 0 8px var(--accent)) drop-shadow(0 0 20px var(--accent-dim));
-}
-body.theme-neon #timer-display.state-warning {
-  background: linear-gradient(180deg, #fff 0%, var(--state-color) 60%, var(--state-dim) 100%);
-  -webkit-background-clip: text; background-clip: text;
-  filter: drop-shadow(0 0 8px var(--state-color)) drop-shadow(0 0 20px var(--state-dim));
-}
-body.theme-neon #timer-display.state-danger,
-body.theme-neon #timer-display.state-done {
-  background: linear-gradient(180deg, #fff 0%, var(--state-color) 60%, var(--state-dim) 100%);
-  -webkit-background-clip: text; background-clip: text;
-  filter: drop-shadow(0 0 8px var(--state-color)) drop-shadow(0 0 20px var(--state-dim));
-  animation: none;
-  opacity: 1;
-}
-body.theme-neon .pxbtn {
-  clip-path: none; border-radius:2px;
-  font-family:'Press Start 2P',monospace; font-size:clamp(7px,1vw,9px);
-  padding:clamp(9px,1.5vh,13px) clamp(14px,2vw,22px); border-width:2px;
-  text-shadow: 0 0 8px var(--accent);
-  box-shadow: inset 0 0 12px var(--accent-dim), 0 0 8px var(--accent-dim);
-}
-body.theme-neon #setup-box { border-width:2px; box-shadow: 0 0 40px var(--accent-dim), inset 0 0 40px rgba(0,0,0,0.4); }
-body.theme-neon #topbar { border-bottom:1px solid var(--border); }
-body.theme-neon #session-name { font-size:clamp(7px,min(1.8vw,1.6vh),12px); text-shadow:0 0 8px var(--accent-mid); }
-body.theme-neon #gameover-banner { font-family:'Press Start 2P',monospace; font-size:clamp(14px,min(3.5vw,4vh),38px); filter:drop-shadow(0 0 16px var(--state-color)); }
-body.theme-neon.present #timer-display { font-size:var(--digit-size-present); }
-body.theme-neon #ring-timer {
-  background: linear-gradient(180deg, #fff 0%, var(--accent) 60%, var(--accent-mid) 100%);
-  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
-  filter: drop-shadow(0 0 8px var(--accent));
-  font-family:'Press Start 2P',monospace;
-}
-
-/* ══ MODEL: CLOCK ══ */
-body.theme-clock {
-  --panel:#1C1008; --border:#3D2A10;
-  --fg:#F5DEB3; --muted:#7A5A2A; --radius:4px;
-  --font-display:'Oswald',sans-serif;
-  --font-ui:'Share Tech Mono',monospace;
-  --font-digit:'Oswald',sans-serif;
-}
-body.theme-clock #app-name { font-family:'Oswald',sans-serif; font-size:clamp(13px,1.8vw,18px); font-weight:600; letter-spacing:0.4em; text-shadow:none; }
-body.theme-clock #timer-display {
-  font-family:'Oswald',sans-serif;
-  font-size:clamp(72px,min(17vw,22vh),240px);
-  font-weight:700; letter-spacing:0.05em; text-shadow:none;
-  position:relative;
-}
-body.theme-clock #timer-display::before {
-  content: attr(data-text);
-  position:absolute; inset:0;
-  color: transparent;
-  -webkit-text-stroke: 1px rgba(255,255,255,0.06);
-  pointer-events:none;
-}
-body.theme-clock .pxbtn { clip-path:none; border-radius:4px; font-family:'Oswald',sans-serif; font-size:clamp(11px,1.3vw,14px); font-weight:600; letter-spacing:0.15em; padding:clamp(9px,1.5vh,13px) clamp(16px,2.5vw,26px); border-width:1px; }
-body.theme-clock .top-btn { border-radius:4px; font-family:'Oswald',sans-serif; letter-spacing:0.1em; }
-body.theme-clock #setup-box { clip-path:none; border-radius:8px; border-width:1px; }
-body.theme-clock #topbar { border-bottom:1px solid var(--border); }
-body.theme-clock #session-name { font-family:'Oswald',sans-serif; font-size:clamp(11px,min(1.8vw,1.6vh),16px); font-weight:600; letter-spacing:0.3em; }
-body.theme-clock #session-arrow { font-family:'Oswald',sans-serif; font-size:14px; }
-body.theme-clock #prog-track { border-radius:4px; }
-body.theme-clock #gameover-banner { font-family:'Oswald',sans-serif; font-weight:700; font-size:clamp(20px,min(4.5vw,5vh),56px); letter-spacing:0.25em; text-shadow:none; }
-body.theme-clock.present #timer-display { font-size:clamp(100px,min(24vw,30vh),320px); }
-body.theme-clock #ring-timer { font-family:'Oswald',sans-serif; font-weight:700; font-size:clamp(44px,min(11vw,14vh),140px); text-shadow:none; letter-spacing:0.04em; }
-body.theme-clock #ring-session { font-family:'Oswald',sans-serif; font-weight:600; letter-spacing:0.2em; }
-body.theme-clock #ring-fill { stroke-width:5; stroke-linecap:butt; }
-body.theme-clock #ring-track { stroke-width:5; }
-
-/* ══ MODEL: BRUTAL ══ */
-body.theme-brutal {
-  --panel:#111111; --border:#333333;
-  --fg:#FFFFFF; --muted:#666666; --radius:0px;
-  --font-display:'Oswald',sans-serif;
-  --font-ui:'Oswald',sans-serif;
-  --font-digit:'Oswald',sans-serif;
-}
-body.theme-brutal #app-name { font-family:'Oswald',sans-serif; font-size:clamp(14px,2vw,22px); font-weight:700; letter-spacing:0.5em; text-shadow:none; color:var(--fg) !important; }
-body.theme-brutal #timer-display {
-  font-family:'Oswald',sans-serif;
-  font-size:clamp(80px,min(20vw,25vh),280px);
-  font-weight:700; letter-spacing:-0.04em;
-  text-shadow:none; color:var(--fg) !important;
-  line-height:0.9;
-}
-body.theme-brutal #timer-display.state-warning { color:var(--state-color) !important; text-shadow:none; }
-body.theme-brutal #timer-display.state-danger,
-body.theme-brutal #timer-display.state-done { color:var(--state-color) !important; text-shadow:none; }
-body.theme-brutal .pxbtn { clip-path:none; border-radius:0; font-family:'Oswald',sans-serif; font-size:clamp(12px,1.5vw,16px); font-weight:700; letter-spacing:0.2em; padding:clamp(9px,1.5vh,13px) clamp(16px,2.5vw,26px); border-width:2px; }
-body.theme-brutal .top-btn { border-radius:0; font-family:'Oswald',sans-serif; font-weight:700; letter-spacing:0.12em; }
-body.theme-brutal #setup-box { clip-path:none; border-radius:0; border-width:2px; box-shadow:6px 6px 0 var(--accent); }
-body.theme-brutal #topbar { border-bottom:2px solid var(--fg); }
-body.theme-brutal #session-name { font-family:'Oswald',sans-serif; font-size:clamp(12px,min(2vw,1.8vh),18px); font-weight:700; letter-spacing:0.4em; color:var(--fg) !important; }
-body.theme-brutal #session-name.running { color:var(--accent) !important; }
-body.theme-brutal #session-name.warning { color:var(--state-color) !important; }
-body.theme-brutal #session-name.danger  { color:var(--state-color) !important; }
-body.theme-brutal #session-arrow { font-size:14px; }
-body.theme-brutal #prog-track { border-width:2px; border-radius:0; }
-body.theme-brutal #gameover-banner { font-family:'Oswald',sans-serif; font-weight:700; font-size:clamp(22px,min(5vw,6vh),64px); letter-spacing:0.3em; text-shadow:none; }
-body.theme-brutal.present #timer-display { font-size:clamp(100px,min(26vw,32vh),360px); }
-body.theme-brutal #ring-timer { font-family:'Oswald',sans-serif; font-weight:700; font-size:clamp(46px,min(12vw,15vh),150px); text-shadow:none; letter-spacing:-0.02em; }
-body.theme-brutal #ring-session { font-family:'Oswald',sans-serif; font-weight:700; letter-spacing:0.3em; }
-body.theme-brutal #ring-fill { stroke-width:6; stroke-linecap:butt; }
-body.theme-brutal #ring-track { stroke-width:6; }
-
-/* ══ MODEL: TERMINAL ══ */
-@import url('https://fonts.googleapis.com/css2?family=VT323&display=swap');
-body.theme-terminal {
-  --accent:#39FF14; --accent-dim:#39FF1444; --accent-mid:#39FF1488;
-  --glow: 0 0 10px #39FF1488, 0 0 28px #39FF1433;
-  --panel:#000D00; --border:#0A2A0A;
-  --fg:#39FF14; --muted:#1A5A1A; --radius:0px;
-  --font-display:'Share Tech Mono',monospace;
-  --font-ui:'Share Tech Mono',monospace;
-  --font-digit:'Share Tech Mono',monospace;
-}
-body.theme-terminal::before {
-  content:''; position:fixed; inset:0; pointer-events:none; z-index:200;
-  background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,18,0,0.2) 2px,rgba(0,18,0,0.2) 4px);
-}
-body.theme-terminal::after {
-  background:radial-gradient(ellipse at center,transparent 50%,rgba(0,0,0,0.7) 100%) !important;
-}
-body.theme-terminal #app-name { font-family:'Share Tech Mono',monospace; font-size:clamp(10px,1.4vw,14px); letter-spacing:0.3em; }
-body.theme-terminal #timer-display {
-  font-family:'Share Tech Mono',monospace;
-  font-size:clamp(56px,min(13vw,18vh),200px);
-  font-weight:400; letter-spacing:0.12em;
-}
-/* blinking cursor after timer */
-body.theme-terminal #timer-display::after {
-  content:'_';
-  animation: term-cursor 1s step-end infinite;
-  font-size:0.8em;
-  vertical-align:middle;
-  margin-left:4px;
-}
-@keyframes term-cursor { 0%,100%{opacity:1} 50%{opacity:0} }
-body.theme-terminal .pxbtn { clip-path:none; border-width:1px; font-family:'Share Tech Mono',monospace; font-size:clamp(9px,1.1vw,12px); letter-spacing:0.18em; padding:clamp(9px,1.5vh,12px) clamp(14px,2vw,22px); }
-body.theme-terminal .top-btn { font-family:'Share Tech Mono',monospace; font-size:clamp(9px,1.1vw,11px); letter-spacing:0.15em; }
-body.theme-terminal #setup-box { clip-path:none; border-width:1px; }
-body.theme-terminal #session-name { font-family:'Share Tech Mono',monospace; font-size:clamp(10px,min(1.6vw,1.5vh),13px); letter-spacing:0.25em; }
-body.theme-terminal #session-arrow { font-family:'Share Tech Mono',monospace; font-size:11px; }
-body.theme-terminal #topbar { border-bottom:1px solid var(--border); }
-body.theme-terminal #gameover-banner { font-family:'Share Tech Mono',monospace; font-size:clamp(12px,min(3vw,3.5vh),34px); letter-spacing:0.3em; }
-body.theme-terminal.present #timer-display { font-size:clamp(80px,min(22vw,28vh),280px); }
-body.theme-terminal #ring-timer { font-family:'Share Tech Mono',monospace; font-size:clamp(34px,min(8.5vw,11.5vh),120px); }
-body.theme-terminal #ring-session { font-family:'Share Tech Mono',monospace; letter-spacing:0.2em; }
-body.theme-terminal #ring-fill { stroke-width:2; stroke-linecap:square; }
-body.theme-terminal #ring-track { stroke-width:2; }
 
 /* ══ BAR STYLES ══ */
 
@@ -354,12 +172,12 @@ body.bar-ring #ring-wrap { display:flex; }
 #ring-track {
   fill: none;
   stroke: var(--panel);
-  stroke-width: 3;
+  stroke-width: 5;
 }
 #ring-fill {
   fill: none;
   stroke: var(--accent);
-  stroke-width: 3;
+  stroke-width: 5;
   stroke-linecap: round;
   transition: stroke-dashoffset 0.9s linear, stroke 0.4s;
   filter: drop-shadow(0 0 4px var(--accent));
@@ -381,8 +199,6 @@ body.present #ring-wrap.has-hours {
   width: min(min(94vh, 98vw), 800px);
   height: min(min(94vh, 98vw), 800px);
 }
-body.present #ring-track,
-body.present #ring-fill { stroke-width: 5; }
 
 /* ring preview in bar tab */
 .bar-prev-ring {
@@ -393,33 +209,36 @@ body.present #ring-fill { stroke-width: 5; }
 /* ══ BACKGROUND COLORS ══ */
 body.bg-black { --bg:#000000; }
 body.bg-white { --bg:#F0F0F0; --fg:#111111; --muted:#888888; --panel:#E0E0E0; --border:#CCCCCC; }
-body.theme-minimal #prog-track { overflow:hidden; }
-body.theme-minimal:not(.bar-dashed):not(.bar-thin) #prog-fill { background-image:none !important; border-radius:100px; }
-
-/* Military same */
-body.theme-military:not(.bar-dashed):not(.bar-thin):not(.bar-pixel) #prog-fill { background-image:none !important; }
 
 #ring-timer {
   font-family: var(--font-digit);
-  font-size: clamp(36px, min(9vw, 12vh), 120px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0;
   line-height: 1;
-  color: var(--accent);
-  text-shadow: var(--glow);
-  letter-spacing: 0.05em;
-  transition: color 0.4s, text-shadow 0.4s, font-size 0.5s cubic-bezier(0.4,0,0.2,1);
+  transition: font-size 0.5s cubic-bezier(0.4,0,0.2,1);
 }
-#ring-wrap.has-hours #ring-timer {
-  font-size: clamp(26px, min(6.5vw, 8.5vh), 86px);
+#ring-timer .digit-slot,
+#ring-timer .digit-sep {
+  font-size: var(--ring-size);
 }
-#ring-timer.state-warning { color:var(--state-color); text-shadow:0 0 14px var(--state-mid); }
-#ring-timer.state-danger  { color:var(--state-color); text-shadow:0 0 14px var(--state-mid); }
-#ring-timer.state-done    { color:var(--state-color); animation:done-p 0.6s ease-in-out infinite alternate; }
+#ring-wrap.has-hours #ring-timer .digit-slot,
+#ring-wrap.has-hours #ring-timer .digit-sep {
+  font-size: calc(var(--ring-size) * 0.72);
+}
+#ring-timer.state-warning .digit-slot,
+#ring-timer.state-warning .digit-sep { color:var(--state-color); text-shadow:0 0 14px var(--state-mid); }
+#ring-timer.state-danger  .digit-slot,
+#ring-timer.state-danger  .digit-sep { color:var(--state-color); text-shadow:0 0 14px var(--state-mid); }
+#ring-timer.state-done    .digit-slot,
+#ring-timer.state-done    .digit-sep { color:var(--state-color); animation:done-p 0.6s ease-in-out infinite alternate; }
 
 #ring-session {
   font-family: var(--font-display);
   font-size: clamp(7px, min(1.4vw, 1.3vh), 11px);
   color: var(--muted);
-  letter-spacing: 0.12em;
+  letter-spacing: var(--display-letterspacing);
   text-transform: uppercase;
   text-align: center;
   cursor: pointer;
@@ -436,21 +255,12 @@ body.theme-military:not(.bar-dashed):not(.bar-thin):not(.bar-pixel) #prog-fill {
   letter-spacing: 0.1em;
 }
 
-body.present #ring-timer { font-size: clamp(52px, min(13vw, 17vh), 180px); }
-body.present #ring-wrap.has-hours #ring-timer { font-size: clamp(36px, min(9vw, 12vh), 128px); }
+body.present #ring-timer .digit-slot,
+body.present #ring-timer .digit-sep { font-size: var(--ring-size-present) !important; }
+body.present #ring-wrap.has-hours #ring-timer .digit-slot,
+body.present #ring-wrap.has-hours #ring-timer .digit-sep { font-size: calc(var(--ring-size-present) * 0.72) !important; }
 body.present #ring-session { font-size: clamp(9px, min(1.8vw, 1.6vh), 15px); }
 
-/* theme-minimal ring */
-body.theme-minimal #ring-timer { font-family:'Oswald',sans-serif; font-weight:700; letter-spacing:-0.02em; font-size:clamp(42px,min(10vw,13vh),130px); text-shadow:none; }
-body.theme-minimal #ring-session { font-family:'Inter',sans-serif; font-weight:500; }
-body.theme-minimal #ring-fill { stroke-width:5; }
-body.theme-minimal #ring-track { stroke-width:5; }
-
-/* theme-military ring */
-body.theme-military #ring-timer { font-family:'Share Tech Mono',monospace; font-size:clamp(32px,min(8vw,11vh),110px); }
-body.theme-military #ring-session { font-family:'Share Tech Mono',monospace; letter-spacing:0.2em; }
-body.theme-military #ring-fill { stroke-width:4; stroke-dasharray: none; stroke-linecap:square; }
-body.theme-military #ring-track { stroke-width:4; }
 html,body { height:100%; background:var(--bg); color:var(--fg); font-family:var(--font-ui); overflow:hidden; user-select:none; transition:background 0.4s,color 0.3s; }
 body { display:flex; flex-direction:column; align-items:center; justify-content:center; position:relative; }
 
@@ -465,14 +275,14 @@ body::after { content:''; position:fixed; inset:0; background:radial-gradient(el
   position:fixed; top:-140px; left:0; right:0; text-align:center;
   font-family:var(--font-display); font-size:clamp(14px,min(3.5vw,4vh),38px);
   color:var(--state-color); text-shadow:0 0 16px var(--state-mid),0 0 40px var(--state-dim);
-  letter-spacing:0.1em; z-index:50; padding:16px;
+  letter-spacing:var(--display-letterspacing); z-index:50; padding:16px;
   transition:top 0.4s cubic-bezier(0.34,1.56,0.64,1);
 }
 #gameover-banner.show { top:16%; }
 
 /* ══ TOPBAR ══ */
-#topbar { position:fixed; top:0; left:0; right:0; display:flex; justify-content:space-between; align-items:center; padding:clamp(8px,1.5vh,14px) clamp(12px,2vw,20px); z-index:10; background:linear-gradient(to bottom,var(--bg) 60%,transparent); }
-#app-name { font-family:var(--font-display); font-size:clamp(8px,1.2vw,11px); color:var(--accent); text-shadow:var(--glow); letter-spacing:0.15em; white-space:nowrap; transition:color 0.3s,text-shadow 0.3s; }
+#topbar { position:fixed; top:0; left:0; right:0; display:flex; justify-content:space-between; align-items:center; padding:clamp(8px,1.5vh,14px) clamp(12px,2vw,20px); z-index:10; background:linear-gradient(to bottom,var(--bg) 60%,transparent); border-bottom:1px solid var(--border); }
+#app-name { font-family:var(--font-display); font-size:clamp(8px,1.2vw,11px); color:var(--accent); text-shadow:var(--glow); letter-spacing:var(--display-letterspacing); white-space:nowrap; transition:color 0.3s,text-shadow 0.3s; }
 #topbar-right { display:flex; gap:clamp(5px,0.8vw,10px); align-items:center; }
 .top-btn { font-family:var(--font-ui); font-size:clamp(9px,1vw,11px); background:transparent; color:var(--muted); border:1px solid var(--border); padding:clamp(4px,0.7vh,6px) clamp(8px,1.2vw,12px); cursor:pointer; letter-spacing:0.08em; white-space:nowrap; border-radius:var(--radius); transition:color 0.15s,border-color 0.15s; }
 .top-btn:hover { color:var(--accent); border-color:var(--accent); }
@@ -485,14 +295,14 @@ body::after { content:''; position:fixed; inset:0; background:radial-gradient(el
 #session-arrow.danger  { color:var(--state-color); animation:blink-a 0.4s step-end infinite; }
 @keyframes blink-a { 0%,100%{opacity:1}50%{opacity:0} }
 
-#session-name { font-family:var(--font-display); font-size:clamp(7px,min(1.6vw,1.5vh),12px); color:var(--muted); letter-spacing:0.12em; text-transform:uppercase; cursor:pointer; padding:3px 6px; border:1px solid transparent; border-radius:var(--radius); transition:color 0.3s,border-color 0.2s; }
+#session-name { font-family:var(--font-display); font-size:clamp(7px,min(1.6vw,1.5vh),12px); color:var(--muted); letter-spacing:var(--display-letterspacing); text-transform:uppercase; cursor:pointer; padding:3px 6px; border:1px solid transparent; border-radius:var(--radius); transition:color 0.3s,border-color 0.2s; }
 #session-name:hover { border-color:var(--border); color:var(--fg); }
 #session-name.running { color:var(--accent); }
 #session-name.warning { color:var(--state-color); }
 #session-name.danger  { color:var(--state-color); }
 
 /* ══ TIMER DIGIT ══ */
-#timer-display { font-family:var(--font-digit); font-size:var(--digit-size); line-height:1; color:var(--accent); text-shadow:var(--glow); letter-spacing:0.05em; transition:color 0.4s,text-shadow 0.4s; }
+#timer-display { font-family:var(--font-digit); font-size:var(--digit-size); line-height:1; color:var(--accent); text-shadow:var(--glow); letter-spacing:var(--digit-letterspacing); transition:color 0.4s,text-shadow 0.4s; }
 #timer-display.state-warning { color:var(--state-color); text-shadow:0 0 14px var(--state-mid),0 0 40px var(--state-dim); }
 #timer-display.state-danger  { color:var(--state-color); text-shadow:0 0 14px var(--state-mid),0 0 40px var(--state-dim); }
 #timer-display.state-done    { color:var(--state-color); text-shadow:0 0 20px var(--state-mid); animation:done-p 0.6s ease-in-out infinite alternate; }
@@ -510,13 +320,13 @@ body.present #gameover-banner { font-size:clamp(18px,min(4.5vw,5vh),50px) !impor
 
 /* ══ PROGRESS BAR ══ */
 #prog-wrap { width:min(min(600px,80vh),90vw); margin-top:var(--gap-sm); display:flex; flex-direction:column; gap:6px; }
-#prog-track { width:100%; height:clamp(10px,1.2vh,14px); background:var(--panel); border:1px solid var(--border); overflow:hidden; transition:height 0.3s; }
+#prog-track { width:100%; height:clamp(10px,1.2vh,14px); background:var(--panel); border:1px solid var(--border); border-radius:100px; overflow:hidden; transition:height 0.3s; }
 #prog-meta  { display:flex; justify-content:space-between; font-size:clamp(9px,1vw,11px); color:var(--muted); letter-spacing:0.08em; }
 
 /* ══ CONTROLS ══ */
 #controls { position:fixed; bottom:0; left:0; right:0; display:flex; flex-direction:column; align-items:center; gap:clamp(8px,1.2vh,14px); padding:clamp(10px,1.5vh,18px) 20px clamp(12px,2vh,24px); background:linear-gradient(to top,var(--bg) 70%,transparent); z-index:10; }
 #btn-row { display:flex; gap:clamp(7px,1.2vw,12px); }
-.pxbtn { font-family:var(--font-display); font-size:clamp(7px,0.9vw,9px); letter-spacing:0.1em; padding:clamp(9px,1.5vh,13px) clamp(14px,2vw,22px); border:2px solid; cursor:pointer; background:transparent; white-space:nowrap; border-radius:var(--radius); transition:background 0.12s,color 0.12s,box-shadow 0.12s,transform 0.08s; text-transform:uppercase; }
+.pxbtn { font-family:var(--font-ui); font-size:clamp(10px,1.2vw,12px); font-weight:600; letter-spacing:0.05em; padding:clamp(9px,1.5vh,13px) clamp(16px,2.5vw,26px); border:1px solid; cursor:pointer; background:transparent; white-space:nowrap; border-radius:var(--radius); transition:background 0.12s,color 0.12s,box-shadow 0.12s,transform 0.08s; text-transform:uppercase; }
 .pxbtn:active { transform:scale(0.95); }
 #btn-start        { color:var(--accent); border-color:var(--accent); }
 #btn-start:hover  { background:var(--accent); color:var(--bg); box-shadow:0 0 18px var(--accent-mid); }
@@ -533,7 +343,7 @@ body.present #gameover-banner { font-size:clamp(18px,min(4.5vw,5vh),50px) !impor
 /* ══ SETUP MODAL ══ */
 #setup-modal { position:fixed; inset:0; background:rgba(0,0,0,0.85); backdrop-filter:blur(5px); display:flex; align-items:center; justify-content:center; z-index:100; opacity:0; pointer-events:none; transition:opacity 0.2s; }
 #setup-modal.open { opacity:1; pointer-events:all; }
-#setup-box { background:var(--panel); border:2px solid var(--accent); box-shadow:0 0 30px var(--accent-dim); padding:24px 26px; width:min(480px,94vw); display:flex; flex-direction:column; gap:16px; max-height:88vh; overflow-y:auto; transition:border-color 0.3s,box-shadow 0.3s; }
+#setup-box { background:var(--panel); border:1px solid var(--accent); border-radius:16px; box-shadow:0 0 40px rgba(0,0,0,0.6); padding:24px 26px; width:min(480px,94vw); display:flex; flex-direction:column; gap:16px; max-height:88vh; overflow-y:auto; transition:border-color 0.3s,box-shadow 0.3s; }
 #setup-heading { font-family:var(--font-display); font-size:11px; color:var(--accent); text-shadow:var(--glow); letter-spacing:0.15em; }
 
 /* Tabs */
@@ -573,28 +383,10 @@ body.present #gameover-banner { font-size:clamp(18px,min(4.5vw,5vh),50px) !impor
 .opt-label { font-size:9px; color:var(--muted); letter-spacing:0.1em; font-family:var(--font-ui); text-align:center; }
 .opt-card.active .opt-label { color:var(--accent); }
 
-/* distinct bg per model card so they don't blend into panel */
-#mc-arcade    { background:#0D0D1A; }
-#mc-minimal   { background:#0A0A0A; }
-#mc-military  { background:#020A02; }
-#mc-neon      { background:#0A0015; }
-#mc-clock     { background:#1C1008; }
-#mc-brutal    { background:#111111; }
-#mc-terminal  { background:#000D00; }
-
-/* model previews */
-.prev-arcade   { font-family:'Press Start 2P',monospace; font-size:11px; color:var(--fg); line-height:1; }
-.prev-minimal  { font-family:'Oswald',sans-serif; font-size:22px; font-weight:700; color:var(--fg); letter-spacing:-0.02em; line-height:1; }
-.prev-military { font-family:'Share Tech Mono',monospace; font-size:14px; color:var(--fg); letter-spacing:0.08em; line-height:1; }
-.prev-neon {
-  font-family:'Press Start 2P',monospace; font-size:11px; line-height:1; letter-spacing:0.04em;
-  background:linear-gradient(180deg,#fff 0%,var(--accent) 60%,var(--accent-mid) 100%);
-  -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text;
-  filter:drop-shadow(0 0 4px var(--accent));
-}
-.prev-clock    { font-family:'Oswald',sans-serif; font-size:22px; font-weight:700; color:#F5DEB3; letter-spacing:0.04em; line-height:1; }
-.prev-brutal   { font-family:'Oswald',sans-serif; font-size:24px; font-weight:700; color:#fff; letter-spacing:-0.03em; line-height:1; }
-.prev-terminal { font-family:'Share Tech Mono',monospace; font-size:13px; color:#39FF14; letter-spacing:0.1em; line-height:1; text-shadow:0 0 6px #39FF14; }
+/* font previews */
+.prev-pixel { font-family:'Press Start 2P',monospace; font-size:13px; color:var(--fg); line-height:1; letter-spacing:0.05em; }
+.prev-clean { font-family:'Oswald',sans-serif; font-size:22px; font-weight:700; color:var(--fg); letter-spacing:-0.02em; line-height:1; }
+.prev-mono  { font-family:'Share Tech Mono',monospace; font-size:14px; color:var(--fg); letter-spacing:0.08em; line-height:1; }
 
 /* bar previews */
 .bar-prev { width:80px; height:10px; background:var(--border); overflow:hidden; border-radius:0; position:relative; }
@@ -755,6 +547,8 @@ body.present #gameover-banner { font-size:clamp(18px,min(4.5vw,5vh),50px) !impor
 .digit-sep {
   font-family: var(--font-digit);
   font-size: var(--digit-size);
+  font-weight: var(--digit-weight);
+  letter-spacing: var(--digit-letterspacing);
   color: var(--accent);
   text-shadow: var(--glow);
   line-height: 1;
@@ -769,6 +563,8 @@ body.present #gameover-banner { font-size:clamp(18px,min(4.5vw,5vh),50px) !impor
   overflow: visible;
   font-family: var(--font-digit);
   font-size: var(--digit-size);
+  font-weight: var(--digit-weight);
+  letter-spacing: var(--digit-letterspacing);
   color: var(--accent);
   text-shadow: var(--glow);
   line-height: 1;
@@ -790,25 +586,25 @@ body.has-hours.present #timer-display .digit-slot,
 body.has-hours.present #timer-display .digit-sep { font-size: var(--digit-size-present-hms) !important; }
 
 /* kelompok jam: animasi masuk/keluar */
-#dg-hour {
+#dg-hour, #rdg-hour {
   overflow: hidden;
   max-width: 0;
   opacity: 0;
   transition: max-width 0.35s ease, opacity 0.3s ease;
 }
-#dg-hour.visible {
+#dg-hour.visible, #rdg-hour.visible {
   max-width: 6em; /* cukup lebar untuk HH + : */
   opacity: 1;
 }
 /* sep setelah jam — ikut show/hide */
-#sep-hm {
+#sep-hm, #rsep-hm {
   overflow: hidden;
   max-width: 0;
   opacity: 0;
   font-size: var(--digit-size);
   transition: font-size 0.35s ease, max-width 0.35s ease, opacity 0.3s ease, color 0.4s;
 }
-#sep-hm.visible { max-width: 1em; opacity: 1; }
+#sep-hm.visible, #rsep-hm.visible { max-width: 1em; opacity: 1; }
 
 /* present mode digit size */
 body.present #timer-display .digit-slot,
@@ -816,65 +612,6 @@ body.present #timer-display .digit-sep { font-size: var(--digit-size-present) !i
 body.present.has-hours #timer-display .digit-slot,
 body.present.has-hours #timer-display .digit-sep { font-size: var(--digit-size-present-hms) !important; }
 
-/* theme overrides untuk digit-slot (ganti dari #timer-display rule lama) */
-body.theme-minimal #timer-display .digit-slot,
-body.theme-minimal #timer-display .digit-sep {
-  font-family:'Oswald',sans-serif; font-weight:700; letter-spacing:-0.03em; text-shadow:none;
-}
-body.theme-minimal.present #timer-display .digit-slot,
-body.theme-minimal.present #timer-display .digit-sep { font-size:clamp(90px,min(22vw,28vh),300px) !important; }
-body.theme-minimal.present.has-hours #timer-display .digit-slot,
-body.theme-minimal.present.has-hours #timer-display .digit-sep { font-size:var(--digit-size-present-hms) !important; }
-
-body.theme-military #timer-display .digit-slot,
-body.theme-military #timer-display .digit-sep {
-  font-family:'Share Tech Mono',monospace; font-weight:400; letter-spacing:0.08em;
-}
-
-body.theme-neon #timer-display .digit-slot {
-  background:linear-gradient(180deg,#fff 0%,var(--accent) 60%,var(--accent-mid) 100%);
-  -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text;
-  text-shadow:none; filter:drop-shadow(0 0 8px var(--accent)) drop-shadow(0 0 20px var(--accent-dim));
-}
-body.theme-neon #timer-display.state-warning .digit-slot {
-  background:linear-gradient(180deg,#fff 0%,var(--state-color) 60%,var(--state-dim) 100%);
-  -webkit-background-clip:text; background-clip:text;
-  filter:drop-shadow(0 0 8px var(--state-color));
-}
-body.theme-neon #timer-display.state-danger .digit-slot,
-body.theme-neon #timer-display.state-done .digit-slot {
-  background:linear-gradient(180deg,#fff 0%,var(--state-color) 60%,var(--state-dim) 100%);
-  -webkit-background-clip:text; background-clip:text;
-  filter:drop-shadow(0 0 8px var(--state-color));
-}
-body.theme-neon #timer-display .digit-sep {
-  background:linear-gradient(180deg,#fff 0%,var(--accent) 60%,var(--accent-mid) 100%);
-  -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text;
-  text-shadow:none; filter:drop-shadow(0 0 8px var(--accent));
-}
-
-body.theme-clock #timer-display .digit-slot,
-body.theme-clock #timer-display .digit-sep {
-  font-family:'Oswald',sans-serif; font-weight:700; letter-spacing:0.05em; text-shadow:none;
-}
-body.theme-brutal #timer-display .digit-slot,
-body.theme-brutal #timer-display .digit-sep {
-  font-family:'Oswald',sans-serif; font-weight:700; letter-spacing:-0.04em;
-  text-shadow:none; color:var(--fg) !important;
-}
-body.theme-brutal #timer-display.state-warning .digit-slot { color:var(--state-color) !important; }
-body.theme-brutal #timer-display.state-danger .digit-slot,
-body.theme-brutal #timer-display.state-done .digit-slot { color:var(--state-color) !important; }
-
-body.theme-terminal #timer-display .digit-slot,
-body.theme-terminal #timer-display .digit-sep {
-  font-family:'Share Tech Mono',monospace; font-weight:400; letter-spacing:0.12em;
-}
-/* cursor blink hanya di digit terakhir (S2) */
-body.theme-terminal .digit-slot:last-of-type .td-a::after {
-  content:'_'; animation:term-cursor 1s step-end infinite;
-  font-size:0.8em; vertical-align:middle; margin-left:2px;
-}
 
 /* shared wrapper — dua slot: .td-a (visible) dan .td-b (incoming) */
 .td-wrap { position:relative; display:inline-block; }
@@ -973,7 +710,7 @@ body.theme-terminal .digit-slot:last-of-type .td-a::after {
 }
 </style>
 </head>
-<body class="theme-arcade bar-pixel bg-black">
+<body class="font-pixel bar-pixel bg-black">
 
 <div id="flash"></div>
 <div id="gameover-banner">WAKTU HABIS</div>
@@ -1022,7 +759,22 @@ body.theme-terminal .digit-slot:last-of-type .td-a::after {
   </svg>
   <div id="ring-inner">
     <span id="ring-session"></span>
-    <div id="ring-timer">00:00</div>
+    <div id="ring-timer">
+      <div class="digit-group" id="rdg-hour">
+        <div class="digit-slot" id="rd-h1"><div class="td-wrap"><span class="td-a">0</span><span class="td-b" aria-hidden="true"></span></div></div>
+        <div class="digit-slot" id="rd-h2"><div class="td-wrap"><span class="td-a">0</span><span class="td-b" aria-hidden="true"></span></div></div>
+      </div>
+      <span class="digit-sep" id="rsep-hm">:</span>
+      <div class="digit-group" id="rdg-min">
+        <div class="digit-slot" id="rd-m1"><div class="td-wrap"><span class="td-a">0</span><span class="td-b" aria-hidden="true"></span></div></div>
+        <div class="digit-slot" id="rd-m2"><div class="td-wrap"><span class="td-a">0</span><span class="td-b" aria-hidden="true"></span></div></div>
+      </div>
+      <span class="digit-sep" id="rsep-ms">:</span>
+      <div class="digit-group" id="rdg-sec">
+        <div class="digit-slot" id="rd-s1"><div class="td-wrap"><span class="td-a">0</span><span class="td-b" aria-hidden="true"></span></div></div>
+        <div class="digit-slot" id="rd-s2"><div class="td-wrap"><span class="td-a">0</span><span class="td-b" aria-hidden="true"></span></div></div>
+      </div>
+    </div>
     <span id="ring-pct">100%</span>
   </div>
 </div>
@@ -1043,7 +795,7 @@ body.theme-terminal .digit-slot:last-of-type .td-a::after {
     <div id="setup-tabs">
       <button class="stab active" onclick="switchTab('sesi')">SESI</button>
       <button class="stab" onclick="switchTab('suara')">SUARA</button>
-      <button class="stab" onclick="switchTab('model')">MODEL</button>
+      <button class="stab" onclick="switchTab('font')">FONT</button>
       <button class="stab" onclick="switchTab('bar')">BAR</button>
       <button class="stab" onclick="switchTab('accent')">ACCENT</button>
     </div>
@@ -1112,36 +864,20 @@ body.theme-terminal .digit-slot:last-of-type .td-a::after {
     </div>
 
     <!-- MODEL -->
-    <div class="tab-panel" id="tab-model">
-      <div class="s-label">Pilih tampilan</div>
-      <div class="opt-grid" style="grid-template-columns:repeat(4,1fr)" id="model-grid">
-        <div class="opt-card active" id="mc-arcade" onclick="setModel('arcade')">
-          <div class="prev-arcade">00:00</div>
-          <div class="opt-label">ARCADE</div>
+    <div class="tab-panel" id="tab-font">
+      <div class="s-label">Jenis Font</div>
+      <div class="opt-grid cols-3" id="font-grid">
+        <div class="opt-card active" id="fc-pixel" onclick="setFont('pixel')">
+          <div class="prev-pixel">00:00</div>
+          <div class="opt-label">PIXEL</div>
         </div>
-        <div class="opt-card" id="mc-minimal" onclick="setModel('minimal')">
-          <div class="prev-minimal">00:00</div>
-          <div class="opt-label">MINIMAL</div>
+        <div class="opt-card" id="fc-clean" onclick="setFont('clean')">
+          <div class="prev-clean">00:00</div>
+          <div class="opt-label">CLEAN</div>
         </div>
-        <div class="opt-card" id="mc-military" onclick="setModel('military')">
-          <div class="prev-military">00:00</div>
-          <div class="opt-label">MILITARY</div>
-        </div>
-        <div class="opt-card" id="mc-neon" onclick="setModel('neon')">
-          <div class="prev-neon">00:00</div>
-          <div class="opt-label">NEON</div>
-        </div>
-        <div class="opt-card" id="mc-clock" onclick="setModel('clock')">
-          <div class="prev-clock">00:00</div>
-          <div class="opt-label">CLOCK</div>
-        </div>
-        <div class="opt-card" id="mc-brutal" onclick="setModel('brutal')">
-          <div class="prev-brutal">00:00</div>
-          <div class="opt-label">BRUTAL</div>
-        </div>
-        <div class="opt-card" id="mc-terminal" onclick="setModel('terminal')" style="grid-column:span 1">
-          <div class="prev-terminal">00:00_</div>
-          <div class="opt-label">TERMINAL</div>
+        <div class="opt-card" id="fc-mono" onclick="setFont('mono')">
+          <div class="prev-mono">00:00</div>
+          <div class="opt-label">MONO</div>
         </div>
       </div>
       <div style="margin-top:10px">
@@ -1274,7 +1010,7 @@ body.theme-terminal .digit-slot:last-of-type .td-a::after {
 let total=600,remaining=600,running=false,finished=false;
 let soundOn=true,ticker=null,label='SESI PRESENTASI';
 let w60=false,w30=false,presentMode=false;
-let currentModel='arcade', currentBar='pixel', currentAccent='cyan', currentBg='black', showPct=true;
+let currentFont='pixel', currentBar='pixel', currentAccent='cyan', currentBg='black', showPct=true;
 let currentTransition='instant';
 
 // ── Accents ──
@@ -1365,25 +1101,12 @@ function setBg(key){
   buildAccentGrid();
 }
 
-// ── Model ──
-const MODELS=['arcade','minimal','military','neon','clock','brutal','terminal'];
-function setModel(m){
-  const prev=currentModel;
-  currentModel=m;
-  // terminal: force green accent
-  if(m==='terminal'){
-    document.documentElement.style.setProperty('--accent','#39FF14');
-    document.documentElement.style.setProperty('--accent-dim','#39FF1444');
-    document.documentElement.style.setProperty('--accent-mid','#39FF1488');
-    document.documentElement.style.setProperty('--glow','0 0 10px #39FF1488,0 0 28px #39FF1433');
-  } else if(prev==='terminal'){
-    applyAccent(currentAccent);
-  }
-  // auto-set default transisi untuk model ini
-  const defTrans=TRANS_DEFAULTS[m]||'instant';
-  setTransition(defTrans);
+// ── Font ──
+const FONTS=['pixel','clean','mono'];
+function setFont(f){
+  currentFont=f;
   syncBodyClass();
-  MODELS.forEach(k=>document.getElementById('mc-'+k)?.classList.toggle('active',k===m));
+  FONTS.forEach(k=>document.getElementById('fc-'+k)?.classList.toggle('active',k===f));
 }
 
 // ── Bar ──
@@ -1428,7 +1151,6 @@ function renderRing(){
   const rs=document.getElementById('ring-session');
   const rt=document.getElementById('ring-timer');
   const rp=document.getElementById('ring-pct');
-  rt.textContent=fmtProg(remaining);
   rs.textContent=label;
   rs.style.display=label?'block':'none';
   rp.textContent=Math.round(pct*100)+'%';
@@ -1450,7 +1172,7 @@ function renderRing(){
 }
 
 function syncBodyClass(){
-  document.body.className=`theme-${currentModel} bar-${currentBar} bg-${currentBg} trans-${currentTransition}`+(presentMode?' present':'');
+  document.body.className=`font-${currentFont} bar-${currentBar} bg-${currentBg} trans-${currentTransition}`+(presentMode?' present':'');
 }
 
 // ── Dots bar renderer ──
@@ -1579,10 +1301,6 @@ function beepWarn(){ if(soundOn) SOUNDS[currentSound]?.warn(); }
 function beepDone(){ if(soundOn) SOUNDS[currentSound]?.done(); }
 
 // ── Transition Engine ──
-const TRANS_DEFAULTS={
-  arcade:'flip', minimal:'sweep', military:'instant',
-  neon:'blur',   clock:'sweep',   brutal:'slam', terminal:'glitch'
-};
 const TRANS_KEYS=['instant','flip','blur','slam','sweep','glitch'];
 
 function setTransition(t){
@@ -1615,6 +1333,28 @@ let _hasHours=false;
 let _hourHideTimer=null;
 
 function getDigitEl(id){ return document.getElementById(id); }
+
+// set teks digit langsung (tanpa animasi) di kedua tampilan (timer-display & ring-timer)
+function setDigitText(key, val){
+  const ta1=getDigitEl('d-'+key)?.querySelector('.td-a');
+  if(ta1) ta1.textContent=val;
+  const ta2=getDigitEl('rd-'+key)?.querySelector('.td-a');
+  if(ta2) ta2.textContent=val;
+}
+
+// animasikan digit di kedua tampilan (timer-display & ring-timer)
+function animateDigit(key, val){
+  animateOneDigit('d-'+key, val);
+  animateOneDigit('rd-'+key, val);
+}
+
+// toggle visibility grup jam di kedua tampilan
+function toggleHourVisible(visible){
+  document.getElementById('dg-hour').classList.toggle('visible', visible);
+  document.getElementById('sep-hm').classList.toggle('visible', visible);
+  document.getElementById('rdg-hour').classList.toggle('visible', visible);
+  document.getElementById('rsep-hm').classList.toggle('visible', visible);
+}
 
 function animateOneDigit(id, newChar){
   const slot=getDigitEl(id);
@@ -1662,12 +1402,10 @@ function updateDigits(f, isRunning){
     _hasHours=true;
     if(_hourHideTimer){ clearTimeout(_hourHideTimer); _hourHideTimer=null; }
     document.body.classList.add('has-hours');
-    document.getElementById('dg-hour').classList.add('visible');
-    document.getElementById('sep-hm').classList.add('visible');
+    toggleHourVisible(true);
     // set digit jam langsung tanpa anim (baru muncul)
     ['h1','h2'].forEach(k=>{
-      const ta=getDigitEl('d-'+k)?.querySelector('.td-a');
-      if(ta) ta.textContent=map[k];
+      setDigitText(k, map[k]);
       cur[k]=map[k];
     });
   }
@@ -1675,11 +1413,9 @@ function updateDigits(f, isRunning){
   // handle jam hilang — trigger anim-out dulu
   if(!shouldHaveHours && _hasHours && !_hourHideTimer){
     // animasi out digit jam
-    ['h1','h2'].forEach(k=>{ animateOneDigit('d-'+k,' '); });
+    ['h1','h2'].forEach(k=>{ animateDigit(k,' '); });
     // hide setelah animasi selesai
-    const hideDelay=250;
-    document.getElementById('dg-hour').classList.remove('visible');
-    document.getElementById('sep-hm').classList.remove('visible');
+    toggleHourVisible(false);
     _hourHideTimer=setTimeout(()=>{
       _hasHours=false;
       _hourHideTimer=null;
@@ -1693,8 +1429,8 @@ function updateDigits(f, isRunning){
       if(!shouldHaveHours) return;
     }
     if(v!==cur[k]){
-      if(isRunning) animateOneDigit('d-'+k, v);
-      else { const ta=getDigitEl('d-'+k)?.querySelector('.td-a'); if(ta) ta.textContent=v; }
+      if(isRunning) animateDigit(k, v);
+      else setDigitText(k, v);
       cur[k]=v;
     }
   });
@@ -1771,11 +1507,8 @@ function resetTimer(){
   _lastDigits={h1:'0',h2:'0',m1:'0',m2:'0',s1:'0',s2:'0'};
   // force re-init digit tampilan
   const f=fmt(remaining);
-  ['h1','h2','m1','m2','s1','s2'].forEach(k=>{
-    const key=k; const ta=getDigitEl('d-'+key)?.querySelector('.td-a');
-    const map={h1:f.hStr[0],h2:f.hStr[1],m1:f.mStr[0],m2:f.mStr[1],s1:f.sStr[0],s2:f.sStr[1]};
-    if(ta) ta.textContent=map[key];
-  });
+  const map={h1:f.hStr[0],h2:f.hStr[1],m1:f.mStr[0],m2:f.mStr[1],s1:f.sStr[0],s2:f.sStr[1]};
+  ['h1','h2','m1','m2','s1','s2'].forEach(k=>{ setDigitText(k, map[k]); });
   document.getElementById('gameover-banner').classList.remove('show');
   // ring-wrap: skip transisi ukuran saat reset
   const rw=document.getElementById('ring-wrap');
@@ -1786,7 +1519,7 @@ function resetTimer(){
 
 // ── Setup ──
 function switchTab(t){
-  const tabs=['sesi','suara','model','bar','accent'];
+  const tabs=['sesi','suara','font','bar','accent'];
   document.querySelectorAll('.stab').forEach((b,i)=>b.classList.toggle('active',tabs[i]===t));
   document.querySelectorAll('.tab-panel').forEach(p=>p.classList.toggle('active',p.id==='tab-'+t));
   if(t==='accent') initPicker();
@@ -1821,14 +1554,12 @@ function applySetup(){
   if(needHours && !_hasHours){
     _hasHours=true;
     document.body.classList.add('has-hours');
-    document.getElementById('dg-hour').classList.add('visible');
-    document.getElementById('sep-hm').classList.add('visible');
+    toggleHourVisible(true);
   } else if(!needHours && _hasHours){
     _hasHours=false;
     if(_hourHideTimer){clearTimeout(_hourHideTimer);_hourHideTimer=null;}
     document.body.classList.remove('has-hours');
-    document.getElementById('dg-hour').classList.remove('visible');
-    document.getElementById('sep-hm').classList.remove('visible');
+    toggleHourVisible(false);
   }
   document.getElementById('gameover-banner').classList.remove('show');
   closeSetup();
@@ -1840,8 +1571,7 @@ function applySetup(){
   const fNew=fmt(remaining);
   const mapNew={h1:fNew.hStr[0],h2:fNew.hStr[1],m1:fNew.mStr[0],m2:fNew.mStr[1],s1:fNew.sStr[0],s2:fNew.sStr[1]};
   ['h1','h2','m1','m2','s1','s2'].forEach(k=>{
-    const ta=getDigitEl('d-'+k)?.querySelector('.td-a');
-    if(ta) ta.textContent=mapNew[k];
+    setDigitText(k, mapNew[k]);
     _lastDigits[k]=mapNew[k];
   });
   render();
@@ -2041,14 +1771,13 @@ document.getElementById('setup-modal').addEventListener('click',function(e){if(e
 
 // ── Init ──
 applyAccent(currentAccent);
-setTransition(TRANS_DEFAULTS['arcade']);
+setTransition('instant');
 // init digit tampilan awal
 {
   const f=fmt(remaining);
+  const map={h1:f.hStr[0],h2:f.hStr[1],m1:f.mStr[0],m2:f.mStr[1],s1:f.sStr[0],s2:f.sStr[1]};
   ['h1','h2','m1','m2','s1','s2'].forEach(k=>{
-    const map={h1:f.hStr[0],h2:f.hStr[1],m1:f.mStr[0],m2:f.mStr[1],s1:f.sStr[0],s2:f.sStr[1]};
-    const ta=getDigitEl('d-'+k)?.querySelector('.td-a');
-    if(ta) ta.textContent=map[k];
+    setDigitText(k, map[k]);
     _lastDigits[k]=map[k];
   });
 }
