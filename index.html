@@ -561,6 +561,12 @@ body.present #gameover-banner { font-size:clamp(18px,min(4.5vw,5vh),50px) !impor
 /* ══ SETUP MODAL ══ */
 #setup-modal { position:fixed; inset:0; background:rgba(0,0,0,0.85); backdrop-filter:blur(5px); display:flex; align-items:center; justify-content:center; z-index:100; opacity:0; pointer-events:none; transition:opacity 0.2s; }
 #setup-modal.open { opacity:1; pointer-events:all; }
+
+#ios-install-hint { position:fixed; inset:0; background:rgba(0,0,0,0.85); backdrop-filter:blur(5px); display:flex; align-items:center; justify-content:center; z-index:110; opacity:0; pointer-events:none; transition:opacity 0.2s; }
+#ios-install-hint.open { opacity:1; pointer-events:all; }
+#ios-install-box { background:var(--panel); border:1px solid var(--accent); border-radius:16px; box-shadow:0 0 40px rgba(0,0,0,0.6); padding:24px 26px; width:min(360px,90vw); display:flex; flex-direction:column; gap:16px; text-align:center; transition:border-color 0.3s,box-shadow 0.3s; }
+#ios-install-title { font-family:var(--font-display); font-size:11px; color:var(--accent); text-shadow:var(--glow); letter-spacing:0.15em; transition:color 0.3s,text-shadow 0.3s; }
+#ios-install-steps { font-family:var(--font-ui); font-size:13px; line-height:1.7; color:var(--fg); }
 #setup-box { background:var(--panel); border:1px solid var(--accent); border-radius:16px; box-shadow:0 0 40px rgba(0,0,0,0.6); padding:24px 26px; width:min(480px,94vw); display:flex; flex-direction:column; gap:16px; max-height:88vh; overflow-y:auto; transition:border-color 0.3s,box-shadow 0.3s; scrollbar-width:thin; scrollbar-color:var(--accent-dim) var(--panel); }
 #setup-box::-webkit-scrollbar { width:8px; }
 #setup-box::-webkit-scrollbar-track { background:var(--panel); }
@@ -991,6 +997,18 @@ body.present.has-hours #timer-display .digit-sep { font-size: var(--digit-size-p
 <body class="font-pixel bar-pixel bg-black">
 
 <div id="flash"></div>
+
+<div id="ios-install-hint" onclick="closeIosInstallHint()">
+  <div id="ios-install-box" onclick="event.stopPropagation()">
+    <div id="ios-install-title">TAMBAH KE LAYAR UTAMA</div>
+    <div id="ios-install-steps">
+      1. Tap ikon <b>Share</b> (kotak dengan tanda panah ke atas) di bar bawah/atas Safari<br><br>
+      2. Pilih <b>"Tambah ke Layar Utama"</b> (Add to Home Screen)<br><br>
+      3. Tap <b>"Tambah"</b>
+    </div>
+    <button class="top-btn" onclick="closeIosInstallHint()">OKE, MENGERTI</button>
+  </div>
+</div>
 <div id="gameover-banner">WAKTU HABIS</div>
 
 <div id="topbar">
@@ -1226,7 +1244,7 @@ body.present.has-hours #timer-display .digit-sep { font-size: var(--digit-size-p
           <div class="toggle-track on" id="toggle-snd" onclick="toggleSound()"><div class="toggle-thumb"></div></div>
         </div>
       </div>
-      <div class="toggle-row" style="margin-top:4px">
+      <div class="toggle-row" style="margin-top:4px" id="vibrate-row">
         <div class="s-label" style="margin-bottom:0">Aktifkan getar</div>
         <div style="display:flex;align-items:center;gap:8px">
           <span id="vib-label" style="font-size:10px;color:var(--muted)">AKTIF</span>
@@ -1475,6 +1493,47 @@ let accentCycleDirection='serentak'; // 'serentak'|'ltr'|'rtl'|'center' — arah
 
 // ── Persistence (localStorage) ──
 const STORAGE_KEY='otk_settings_v1';
+const TIMER_KEY='otk_timer_v1'; // state countdown aktif — supaya bertahan saat refresh/PWA restart
+function saveTimerState(){
+  try{
+    localStorage.setItem(TIMER_KEY, JSON.stringify({
+      total, remaining, running, endAt, finished, w60, w30
+    }));
+  }catch(e){}
+}
+function loadTimerState(){
+  try{
+    const raw=localStorage.getItem(TIMER_KEY);
+    if(!raw) return null;
+    return JSON.parse(raw);
+  }catch(e){ return null; }
+}
+// pulihkan countdown yang sedang berjalan/berhenti dari sesi sebelumnya
+// (mis. tab/PWA ke-refresh tanpa sengaja saat presentasi)
+function restoreTimerState(){
+  const ts=loadTimerState();
+  if(!ts || typeof ts.total!=='number' || ts.total<=0) return;
+  total=ts.total;
+  w60=!!ts.w60;
+  w30=!!ts.w30;
+  syncHasHours(total);
+  if(ts.running && typeof ts.endAt==='number'){
+    endAt=ts.endAt;
+    remaining=Math.round((endAt-Date.now())/1000);
+    finished=remaining<=0;
+    running=true;
+    if(!ticker) ticker=setInterval(tick,1000);
+    acquireWakeLock();
+  } else {
+    remaining=(typeof ts.remaining==='number')?ts.remaining:total;
+    finished=!!ts.finished;
+    running=false;
+    endAt=null;
+  }
+  if(finished){
+    document.getElementById('gameover-banner').classList.add('show');
+  }
+}
 function saveSettings(){
   try{
     localStorage.setItem(STORAGE_KEY, JSON.stringify({
@@ -2220,6 +2279,19 @@ function animateDigit(key, val){
 }
 
 // toggle visibility grup jam di semua tampilan
+function syncHasHours(t){
+  const needHours=t>=3600;
+  if(needHours && !_hasHours){
+    _hasHours=true;
+    document.body.classList.add('has-hours');
+    toggleHourVisible(true);
+  } else if(!needHours && _hasHours){
+    _hasHours=false;
+    if(_hourHideTimer){clearTimeout(_hourHideTimer);_hourHideTimer=null;}
+    document.body.classList.remove('has-hours');
+    toggleHourVisible(false);
+  }
+}
 function toggleHourVisible(visible){
   HOUR_GROUPS.forEach(([g,s])=>{
     document.getElementById(g)?.classList.toggle('visible', visible);
@@ -2412,6 +2484,7 @@ function tick(){
   if(remaining===30&&!w30){w30=true;beepWarn(30);vibrate([80,60,80]);}
   if(remaining<=10&&remaining>0)beep(remaining);
   render();
+  saveTimerState();
 }
 
 // ── Controls ──
@@ -2427,6 +2500,7 @@ function toggleTimer(){
     releaseWakeLock();
   }
   render();
+  saveTimerState();
 }
 
 // ── Tambah waktu cepat (+1m/+5m) ──
@@ -2441,6 +2515,7 @@ function addTime(sec){
   if(remaining>60) w60=false;
   if(remaining>30) w30=false;
   render();
+  saveTimerState();
 }
 
 function resetTimer(){
@@ -2470,6 +2545,7 @@ function resetTimer(){
     svg.classList.add('hg-reset-spin');
   }
   render();
+  saveTimerState();
 }
 
 // ── Setup ──
@@ -2505,17 +2581,7 @@ function applySetup(){
   // reset digit state
   _lastDigits={h1:'0',h2:'0',m1:'0',m2:'0',s1:'0',s2:'0'};
   // sync has-hours class immediately
-  const needHours=t>=3600;
-  if(needHours && !_hasHours){
-    _hasHours=true;
-    document.body.classList.add('has-hours');
-    toggleHourVisible(true);
-  } else if(!needHours && _hasHours){
-    _hasHours=false;
-    if(_hourHideTimer){clearTimeout(_hourHideTimer);_hourHideTimer=null;}
-    document.body.classList.remove('has-hours');
-    toggleHourVisible(false);
-  }
+  syncHasHours(t);
   document.getElementById('gameover-banner').classList.remove('show');
   closeSetup();
   // ring-wrap & analog-wrap: skip transisi ukuran saat ganti timer baru
@@ -2534,6 +2600,7 @@ function applySetup(){
   });
   render();
   saveSettings();
+  saveTimerState();
 }
 // ── Presets (dynamic) ──
 let presets=[
@@ -2835,6 +2902,12 @@ document.getElementById('setup-modal').addEventListener('click',function(e){if(e
 
 // ── Init ──
 applyLoadedSettings(loadSettings());
+restoreTimerState();
+// sembunyikan toggle getar kalau device tidak mendukung Vibration API (semua iOS)
+if(!('vibrate' in navigator)){
+  const vr=document.getElementById('vibrate-row');
+  if(vr) vr.style.display='none';
+}
 // init digit tampilan awal
 {
   const f=fmt(remaining);
@@ -2893,10 +2966,17 @@ function setInstallBtn(state){
 }
 setInstallBtn('hidden');
 
-// kalau app dibuka dalam mode standalone (sudah terinstal & dijalankan dari ikon), pasti sudah terinstal
-if(window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone){
+// deteksi iOS (Safari/Chrome iOS — semua WebKit, tidak ada beforeinstallprompt)
+const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) || (navigator.platform==='MacIntel' && navigator.maxTouchPoints>1);
+const isStandalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone===true;
+
+if(isStandalone){
+  // app dibuka dalam mode standalone (sudah terinstal & dijalankan dari ikon) -> pasti sudah terinstal
   localStorage.setItem('otk_pwa_installed','true');
   setInstallBtn('hidden');
+} else if(isIOS){
+  // iOS tidak punya beforeinstallprompt -> tampilkan tombol manual yang membuka panduan
+  setInstallBtn('install');
 }
 
 // browser bilang "bisa diinstal" -> berarti BELUM terinstal (termasuk kalau baru saja di-uninstall)
@@ -2915,10 +2995,20 @@ window.addEventListener('appinstalled', ()=>{
 });
 
 function installPwa(){
-  if(!deferredInstallPrompt) return;
-  deferredInstallPrompt.prompt();
-  deferredInstallPrompt.userChoice.then(()=>{ deferredInstallPrompt=null; });
+  if(deferredInstallPrompt){
+    deferredInstallPrompt.prompt();
+    deferredInstallPrompt.userChoice.then(()=>{ deferredInstallPrompt=null; });
+    return;
+  }
+  if(isIOS){
+    // tidak ada API install otomatis di iOS -> tampilkan panduan manual "Tambah ke Layar Utama"
+    document.getElementById('ios-install-hint').classList.add('open');
+  }
 }
+function closeIosInstallHint(){
+  document.getElementById('ios-install-hint').classList.remove('open');
+}
+
 
 </script>
 </body>
